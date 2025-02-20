@@ -1,0 +1,65 @@
+/* Navbar */
+.navbar {
+    height:10px;
+    width: 120%;
+    background-color: rgb(4, 50, 86);
+    padding: 10px;
+    text-align: center;
+    margin: auto;
+    color: white;
+}
+
+/* Orange Box */
+.orange-box {
+    width: 80%;
+    background-color: rgb(210, 161, 70);
+    text-align: center;
+    margin: 10px auto;
+    border-radius: 10px;
+}
+
+/* Form */
+form {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Button Styling */
+button {
+    background-color: lightblue;
+    color: black;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: rgba(25, 0, 255, 0.205);
+    color: white;
+}
+
+/* Result Container */
+.result-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Image Box */
+.image-box img {
+    max-width: 200px;
+    border: 2px solid #ccc;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+/* Prediction Result Box */
+.result-box {
+    border: 2px solid black;
+    padding: 20px;
+    font-size: 18px;
+    text-align: center;
+    background-color: white;
+}

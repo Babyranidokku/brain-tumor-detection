@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Brain Tumor Detection</title>
+</head>
+<body>
+
+    <div class="navbar">
+        <marquee>Braintumor Detection in MRI Scan</marquee>
+    </div>
+
+    <div class="orange-box">
+        <h1>Hey, there! Welcome to Brain Tumor Detection Application</h1>
+    </div>
+
+    <form id="upload-form" enctype="multipart/form-data">
+        <input type="file" id="file-input" name="file" accept="image/*">
+        <button type="submit">Predict</button>
+    </form>
+
+    <div class="result-container">
+        <div class="image-box">
+            <img id="uploaded-image" src="" alt="Uploaded Image" style="display: none;">
+        </div>
+        <div class="result-box">
+            <p id="prediction-result">Prediction will be displayed here...</p>
+        </div>
+    </div>
+
+    <script>
+    document.getElementById('upload-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        let formData = new FormData();
+        let fileInput = document.getElementById('file-input');
+        formData.append('file', fileInput.files[0]);
+
+        fetch('/predict', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.image_url) {
+                document.getElementById('uploaded-image').src = data.image_url;
+                document.getElementById('uploaded-image').style.display = 'block';
+            }
+            document.getElementById('prediction-result').innerText = data.result;
+        })
+        .catch(error => console.error('Error:', error));
+    });
+    </script>
+
+</body>
+</html>
