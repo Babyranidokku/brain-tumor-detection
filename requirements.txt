@@ -1,7 +1,6 @@
- ```
- streamlit
+streamlit
 tensorflow
 numpy
-pillow
+pandas
+opencv-python
 
- ```
