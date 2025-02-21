@@ -78,6 +78,6 @@ history = model.fit(
 )
 
 # Save Model
-model.save("brain_tumor_cnn.h5")
+model.save("brain_tumor_cnn.keras", save_format="keras", include_optimizer=False)
 
-print("Model training complete and saved as 'brain_tumor_cnn.h5'!")
+print("Model training complete and saved as 'brain_tumor_cnn.keras'!")

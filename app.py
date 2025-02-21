@@ -5,13 +5,15 @@ from PIL import Image
 import requests
 import os
 
-# OneDrive Direct Link (Modify if needed)
-MODEL_URL = "https://1drv.ms/u/s!AqTkvyIO6kdBm74h9fGa3SmhRtucCQ?e=E2NoJH"
-MODEL_PATH = "brain_tumor_cnn.h5"
+# Updated file name
+MODEL_PATH = "brain_tumor_cnn.keras"
+
+# OneDrive Direct Link or Google Drive Link (Use OneDrive or Google Drive)
+MODEL_URL = "https://drive.google.com/file/d/1Q-MsGDLj8tlJg_7Vo7S09SzFqLl-APXa/view?usp=sharing" # Change to your link
 
 # Function to download model if not present
 def download_model():
-    if not os.path.exists(MODEL_PATH):  # Download only if not exists
+    if not os.path.exists(MODEL_PATH):  
         st.info("🔄 Downloading the model... Please wait.")
         response = requests.get(MODEL_URL, allow_redirects=True)
         with open(MODEL_PATH, "wb") as model_file:
@@ -20,9 +22,9 @@ def download_model():
 
 # Download & Load Model
 download_model()
-model = tf.keras.models.load_model(MODEL_PATH)
+model = tf.keras.models.load_model(MODEL_PATH, compile=False)  # ✅ Fix file loading issue
 
-# Function to preprocess image
+# Image Preprocessing Function
 def preprocess_image(image, target_size=(150, 150)):
     image = image.resize(target_size)
     image = image.convert("RGB")
