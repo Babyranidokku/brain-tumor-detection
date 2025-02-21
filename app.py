@@ -1,16 +1,16 @@
-import streamlit as st
+import os
 import numpy as np
 import tensorflow as tf
+from tensorflow import keras
 from PIL import Image
 import requests
-import os
+import streamlit as st
 
-# Updated file name
+# Model Path
 MODEL_PATH = "brain_tumor_cnn.keras"
 
-# OneDrive Direct Link or Google Drive Link (Use OneDrive or Google Drive)
-MODEL_URL = f"https://drive.google.com/uc?export=download&id=1Q-MsGDLj8tlJg_7Vo7S09SzFqLl-APXa"
- # Change to your link
+# Google Drive Direct Link
+MODEL_URL = "https://drive.google.com/uc?export=download&id=1Q-MsGDLj8tlJg_7Vo7S09SzFqLl-APXa"
 
 # Function to download model if not present
 def download_model():
@@ -24,13 +24,15 @@ def download_model():
         else:
             st.error("❌ Failed to download model. Check your link!")
 
-
-# Download & Load Model
+# Download Model (if needed)
 download_model()
-from tensorflow import keras
 
-model = keras.models.load_model(r"C:/Users/babyr/Braintumordetection/brain_tumor_cnn.keras")
-
+# Load Model
+try:
+    model = keras.models.load_model(MODEL_PATH, compile=False)
+    st.success("✅ Model Loaded Successfully!")
+except Exception as e:
+    st.error(f"🚨 Error loading model: {e}")
 
 # Image Preprocessing Function
 def preprocess_image(image, target_size=(150, 150)):
