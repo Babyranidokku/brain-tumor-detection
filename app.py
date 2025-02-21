@@ -5,34 +5,35 @@ from tensorflow import keras
 from PIL import Image
 import requests
 import streamlit as st
+import gdown  # Add this for downloading from Google Drive
 
 # Model Path
 MODEL_PATH = "brain_tumor_cnn.keras"
 
 # Google Drive Direct Link
-MODEL_URL = "https://drive.google.com/uc?export=download&id=1Q-MsGDLj8tlJg_7Vo7S09SzFqLl-APXa"
+GOOGLE_DRIVE_ID = "1Q-MsGDLj8tlJg_7Vo7S09SzFqLl-APXa"
+MODEL_URL = f"https://drive.google.com/uc?export=download&id={GOOGLE_DRIVE_ID}"
 
 # Function to download model if not present
 def download_model():
     if not os.path.exists(MODEL_PATH):  
         st.info("🔄 Downloading the model... Please wait.")
-        response = requests.get(MODEL_URL, allow_redirects=True)
-        if response.status_code == 200:
-            with open(MODEL_PATH, "wb") as model_file:
-                model_file.write(response.content)
+        try:
+            gdown.download(MODEL_URL, MODEL_PATH, quiet=False)
             st.success("✅ Model downloaded successfully!")
-        else:
-            st.error("❌ Failed to download model. Check your link!")
+        except Exception as e:
+            st.error(f"❌ Failed to download model: {e}")
+            return False
+    return True
 
 # Download Model (if needed)
-download_model()
-
-# Load Model
-try:
-    model = keras.models.load_model(MODEL_PATH, compile=False)
-    st.success("✅ Model Loaded Successfully!")
-except Exception as e:
-    st.error(f"🚨 Error loading model: {e}")
+if download_model():
+    try:
+        model = keras.models.load_model(MODEL_PATH, compile=False)
+        st.success("✅ Model Loaded Successfully!")
+    except Exception as e:
+        st.error(f"🚨 Error loading model: {e}")
+        model = None  # Set model to None if loading fails
 
 # Image Preprocessing Function
 def preprocess_image(image, target_size=(150, 150)):
@@ -54,15 +55,18 @@ st.write("Upload an MRI scan image to check for a brain tumor.")
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
-    image = Image.open(uploaded_file)
-    st.image(image, caption="Uploaded MRI Scan", width=300)
-
-    # Process & Predict
-    processed_image = preprocess_image(image)
-    prediction = model.predict(processed_image)
-
-    # Display Result
-    if prediction[0] > 0.5:
-        st.error("🚨 **Tumor Detected**")
+    if model is None:
+        st.error("🚨 Model could not be loaded. Please check logs!")
     else:
-        st.success("✅ **No Tumor Detected**")
+        image = Image.open(uploaded_file)
+        st.image(image, caption="Uploaded MRI Scan", width=300)
+
+        # Process & Predict
+        processed_image = preprocess_image(image)
+        prediction = model.predict(processed_image)
+
+        # Display Result
+        if prediction[0] > 0.5:
+            st.error("🚨 **Tumor Detected**")
+        else:
+            st.success("✅ **No Tumor Detected**")
