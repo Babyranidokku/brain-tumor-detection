@@ -27,7 +27,10 @@ def download_model():
 
 # Download & Load Model
 download_model()
-model = tf.keras.models.load_model(MODEL_PATH, compile=False)  # ✅ Fix file loading issue
+from tensorflow import keras
+
+model = keras.models.load_model("C:/Users/babyr/Braintumordetection/brain_tumor_cnn.keras")
+
 
 # Image Preprocessing Function
 def preprocess_image(image, target_size=(150, 150)):

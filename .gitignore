@@ -1,0 +1,23 @@
+# Ignore virtual environment
+env/
+
+# Ignore dataset files
+dataset/
+*.csv
+*.xlsx
+
+# Ignore cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+brain_tumor_cnn.keras
+# Ignore large log files
+logs/
+*.log
+nohup.out
+
+# Ignore system-specific files
+.DS_Store
+Thumbs.db
