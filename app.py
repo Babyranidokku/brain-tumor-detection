@@ -3,9 +3,8 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 from PIL import Image
-import requests
 import streamlit as st
-import gdown  # Add this for downloading from Google Drive
+import gdown  # For downloading model from Google Drive
 
 # Model Path
 MODEL_PATH = "brain_tumor_cnn.keras"
@@ -16,17 +15,18 @@ MODEL_URL = f"https://drive.google.com/uc?export=download&id={GOOGLE_DRIVE_ID}"
 
 # Function to download model if not present
 def download_model():
+    """Downloads the model if it's not found in the directory."""
     if not os.path.exists(MODEL_PATH):  
-        st.info("🔄 Downloading the model... Please wait.")
+        st.info("🔄 Downloading model... Please wait.")
         try:
             gdown.download(MODEL_URL, MODEL_PATH, quiet=False)
             st.success("✅ Model downloaded successfully!")
         except Exception as e:
-            st.error(f"❌ Failed to download model: {e}")
+            st.error(f"❌ Model download failed: {e}")
             return False
     return True
 
-# Download Model (if needed)
+# Ensure model is downloaded before loading
 if download_model():
     try:
         model = keras.models.load_model(MODEL_PATH, compile=False)
@@ -37,6 +37,7 @@ if download_model():
 
 # Image Preprocessing Function
 def preprocess_image(image, target_size=(150, 150)):
+    """Prepares the image for model prediction."""
     image = image.resize(target_size)
     image = image.convert("RGB")
     img_array = np.array(image)
@@ -70,3 +71,6 @@ if uploaded_file is not None:
             st.error("🚨 **Tumor Detected**")
         else:
             st.success("✅ **No Tumor Detected**")
+
+# Debugging - Check if model exists in Streamlit Cloud
+st.write("🛠 Model file exists:", os.path.exists(MODEL_PATH))
