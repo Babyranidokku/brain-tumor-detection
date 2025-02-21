@@ -29,7 +29,7 @@ def download_model():
 download_model()
 from tensorflow import keras
 
-model = keras.models.load_model("C:/Users/babyr/Braintumordetection/brain_tumor_cnn.keras")
+model = keras.models.load_model(r"C:/Users/babyr/Braintumordetection/brain_tumor_cnn.keras")
 
 
 # Image Preprocessing Function
