@@ -9,16 +9,21 @@ import os
 MODEL_PATH = "brain_tumor_cnn.keras"
 
 # OneDrive Direct Link or Google Drive Link (Use OneDrive or Google Drive)
-MODEL_URL = "https://drive.google.com/file/d/1Q-MsGDLj8tlJg_7Vo7S09SzFqLl-APXa/view?usp=sharing" # Change to your link
+MODEL_URL = f"https://drive.google.com/uc?export=download&id=1Q-MsGDLj8tlJg_7Vo7S09SzFqLl-APXa"
+ # Change to your link
 
 # Function to download model if not present
 def download_model():
     if not os.path.exists(MODEL_PATH):  
         st.info("🔄 Downloading the model... Please wait.")
         response = requests.get(MODEL_URL, allow_redirects=True)
-        with open(MODEL_PATH, "wb") as model_file:
-            model_file.write(response.content)
-        st.success("✅ Model downloaded successfully!")
+        if response.status_code == 200:
+            with open(MODEL_PATH, "wb") as model_file:
+                model_file.write(response.content)
+            st.success("✅ Model downloaded successfully!")
+        else:
+            st.error("❌ Failed to download model. Check your link!")
+
 
 # Download & Load Model
 download_model()
