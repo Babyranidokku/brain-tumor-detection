@@ -3,4 +3,6 @@ tensorflow
 numpy
 pandas
 opencv-python
+gdown
+
 
